@@ -1,0 +1,72 @@
+pipeline {
+  agent {
+    kubernetes {
+      yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    service_name: role-service
+    service_type: REST
+spec:
+  containers:
+  - name: rnd
+    image: docker:latest
+    command: 
+    - cat
+    tty: true
+    volumeMounts:
+    - mountPath: /var/run/docker.sock
+      name: docker-sock
+  - name: kubectl
+    image: bryandollery/terraform-packer-aws-alpine
+    command:
+    - cat
+    tty: true
+  volumes:
+  - name: docker-sock
+    hostPath:
+      path: /var/run/docker.sock  
+      type: Socket
+"""
+    }
+  }
+  environment {
+    CREDS = credentials('docker-creds')
+    DOCKER_NAMESPACE = 'rahafog1'
+    SERVICE_NAME = 'role-service'
+    TOKEN=credentials('be58ac6f-89ae-461a-989c-f70b29b78f20')
+  }
+  stages {
+      stage("Build") {
+          steps {
+              container('rnd') {
+                  sh '''
+                      cd $SERVICE_NAME
+                      docker build --tag $DOCKER_NAMESPACE/$SERVICE_NAME .
+                  '''
+              }
+          }
+      }
+      stage("Release") {
+          steps {
+              container('rnd') {
+                  sh '''
+                      docker login -p $CREDS_PSW -u $CREDS_USR
+                      docker push $DOCKER_NAMESPACE/$SERVICE_NAME
+                  '''
+              }
+          }
+      }
+      stage("Deploy") {
+          steps {
+              container('kubectl') {
+                  sh '''
+                      cd $SERVICE_NAME
+                      kubectl --token=$TOKEN -n test apply -f deploy.yaml -f service.yaml
+                  '''
+              }
+          }
+      }
+  }
+}
