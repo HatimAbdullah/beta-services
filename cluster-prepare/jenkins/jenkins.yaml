@@ -1,0 +1,30 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: jenkins
+  namespace: jenkins
+spec:
+  chart: stable/jenkins
+  targetNamespace: jenkins
+  valuesContent: |-
+    master:
+      jobs:
+        test-job: |-
+          <?xml version='1.0' encoding='UTF-8'?>
+          <project>
+          <keepDependencies>false</keepDependencies>
+          <properties/>
+          <scm class="hudson.scm.NullSCM"/>
+          <canRoam>false</canRoam>
+          <disabled>false</disabled>
+          <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+          <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+          <triggers/>
+          <concurrentBuild>false</concurrentBuild>
+          <builders/>
+          <publishers/>
+          <buildWrappers/>
+          </project>
+      image: jenkinsci/blueocean
+      tag: latest
+      jenkinsUriPrefix: "/jenkins"

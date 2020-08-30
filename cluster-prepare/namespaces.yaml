@@ -1,0 +1,21 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: jenkins
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: bets-app
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: elf
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: monitor
+
+
