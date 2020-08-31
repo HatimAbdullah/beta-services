@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: role-service
-  namespace: test
   labels:
     app: role-service
     type: api
