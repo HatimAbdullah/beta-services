@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: office-service
-  namespace: test
   labels:
     app: office-service
     type: api
