@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: "department-ingress"
-  namespace: test
+  namespace: department-test
 
 spec:
   rules:
