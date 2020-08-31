@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: project-assessment-site
+  namespace: project-test
   labels:
     app: project-assessment-site
     type: api
