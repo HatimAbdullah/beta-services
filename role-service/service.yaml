@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: role-service
+  namespace: role-test
 spec:
   type: NodePort
   selector:
