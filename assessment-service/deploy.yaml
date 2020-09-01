@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: assessment-deployment
+  namespace: assessment-prod
+  labels:
+    app: assessment-service
+    type: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: assessment-service
+  template:
+    metadata:
+      labels:
+        app: assessment-service
+    spec:
+      containers:
+      - name: assessment-service
+        image: lordblackfish/assessment-service:version-number
+        ports:
+        - containerPort: 80
