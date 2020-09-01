@@ -18,11 +18,11 @@ pipeline {
                DIFF=$(git diff --name-only $GIT_COMMIT $GIT_PREVIOUS_SUCCESSFUL_COMMIT | grep $SERVICE_NAME | wc -l)
                if [[ $DIFF -gt 0 ]]
                then
-                echo 'detcted changes, proceding with build'
-                CONTINUE_BUILD = true
+                echo 'detcted changes, proceeding with build'
+                CONTINUE_BUILD=true
                else
 	        echo 'no detcted changes, skipping build'
-                CONTINUE_BUILD = false
+                CONTINUE_BUILD=false
                fi
 	    '''
            /* script {
