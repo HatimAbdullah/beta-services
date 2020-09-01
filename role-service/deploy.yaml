@@ -2,11 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: role-service
-<<<<<<< HEAD
-  namespace: role-test
-=======
-  namespace: role-dev
->>>>>>> dev
+  namespace: role-prod
   labels:
     app: role-service
     type: api
@@ -22,6 +18,6 @@ spec:
     spec:
       containers:
       - name: role-service
-        image: rahafog1/role-service
+        image: lordblackfish/role-service:version-number
         ports:
         - containerPort: 80

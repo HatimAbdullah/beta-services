@@ -1,8 +1,4 @@
 kind: Namespace
 apiVersion: v1
 metadata:
-<<<<<<< HEAD
-  name: project-test
-=======
-  name: project-dev
->>>>>>> dev
+  name: assessment-prod

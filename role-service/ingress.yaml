@@ -1,13 +1,8 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: "role-ingress"
-<<<<<<< HEAD
-  namespace: role-test
-=======
-  namespace: role-dev
->>>>>>> dev
-
+  name: role-ingress-prod
+  namespace: role-prod
 spec:
   rules:
     - host:

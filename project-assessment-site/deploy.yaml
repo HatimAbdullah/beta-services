@@ -1,27 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: project-assessment-site
-<<<<<<< HEAD
-  namespace: project-test
-=======
-  namespace: project-dev
->>>>>>> dev
+  name: assessment-deployment
+  namespace: assessment-prod
   labels:
-    app: project-assessment-site
+    app: assessment-service
     type: api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: project-assessment-site
+      app: assessment-service
   template:
     metadata:
       labels:
-        app: project-assessment-site
+        app: assessment-service
     spec:
       containers:
-      - name: project-assessment-site
-        image: rahafog1/project-assessment-site
+      - name: assessment-service
+        image: lordblackfish/assessment-service:version-number
         ports:
         - containerPort: 80
