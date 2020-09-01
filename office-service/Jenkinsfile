@@ -30,7 +30,7 @@ pipeline {
           }
       }
       stage("Release") {
-               when { CONTINUE_BUILD == true } 
+               when { environment name: 'CONTINUE_BUILD', value: 'ture' } 
 		steps {
                   sh '''
                       env
