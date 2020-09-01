@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: "project-assessment-ingress"
-  namespace: project-test
+  namespace: project-prod
 
 spec:
   rules:
