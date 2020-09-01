@@ -105,7 +105,7 @@ spec:
 		      cd $SERVICE_NAME
 		      sed -i 's+version-number+'"$BUILD_NUMBER"'+g' deployment.yaml
 		      kubectl apply -f namespace.yaml 2> /dev/null
-                      kubectl apply -f deployment.yaml -f service.yaml
+                      kubectl apply -f deploy.yaml -f service.yaml
                   '''
               }
           }
