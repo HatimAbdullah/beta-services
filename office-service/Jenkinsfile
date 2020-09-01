@@ -22,7 +22,6 @@ pipeline {
                 def strCount = sh(returnStdout: true, script: "git diff --name-only ${env.GIT_COMMIT} ${env.GIT_COMMIT} | grep office-service | wc -l").trim()
                 if(strCount=="0") {
                     echo "Skipping build no files updated"
-                    env
                     CONTINUE_BUILD = false
                 } else {
                     echo "Changes found in the servicelayer module"
@@ -36,6 +35,7 @@ pipeline {
           steps {
               
                   sh '''
+                      env
                       echo build
                   '''
               
