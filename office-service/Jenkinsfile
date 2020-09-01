@@ -21,7 +21,7 @@ pipeline {
                     echo "Skipping build no files updated"
                     CONTINUE_BUILD = false
                 } else {
-                    echo "Changes found in the servicelayer module"
+                    echo "Changes found!!! build"
                 }
             }
         }
