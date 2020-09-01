@@ -19,10 +19,10 @@ pipeline {
                 def strCount = sh(returnStdout: true, script: "git diff --name-only ${env.GIT_COMMIT} ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT} | grep ${env.SERVICE_NAME} | wc -l").trim()
                 if(strCount=="0") {
                     echo "Skipping build no files updated"
-                    CONTINUE_BUILD = false
+                    env.CONTINUE_BUILD = false
                 } else {
                     echo "Changes found!!! build"
-                    CONTINUE_BUILD = true
+                    env.CONTINUE_BUILD = true
                 }
             }
         }
@@ -30,7 +30,7 @@ pipeline {
           }
       }
       stage("Release") {
-               when { environment name: 'CONTINUE_BUILD', value: 'false' } 
+               when { environment name: 'CONTINUE_BUILD', value: 'true' } 
 		steps {
                   sh '''
                       env
