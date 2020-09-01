@@ -30,8 +30,8 @@ pipeline {
           }
       }
       stage("Release") {
-          steps {
                when (CONTINUE_BUILD == true) {
+		steps {
                   sh '''
                       env
                       echo build
