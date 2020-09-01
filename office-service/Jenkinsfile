@@ -22,6 +22,7 @@ pipeline {
                     CONTINUE_BUILD = false
                 } else {
                     echo "Changes found!!! build"
+                    CONTINUE_BUILD = true
                 }
             }
         }
@@ -30,12 +31,12 @@ pipeline {
       }
       stage("Release") {
           steps {
-              
+               when (CONTINUE_BUILD == true) {
                   sh '''
                       env
                       echo build
                   '''
-              
+              }
           }
       }
   }
