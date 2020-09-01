@@ -19,10 +19,10 @@ pipeline {
                if [[ $DIFF -gt 0 ]]
                then
                 echo 'detcted changes, proceeding with build'
-                CONTINUE_BUILD=true
+                export CONTINUE_BUILD=true
                else
 	        echo 'no detcted changes, skipping build'
-                CONTINUE_BUILD=false
+                export CONTINUE_BUILD=false
                fi
 	    '''
            /* script {
@@ -44,11 +44,7 @@ pipeline {
                when { environment name: 'CONTINUE_BUILD', value: 'true' } 
 		steps {
                   sh '''
-                      BUCK=$(git diff --name-only $GIT_COMMIT $GIT_PREVIOUS_SUCCESSFUL_COMMIT | grep $SERVICE_NAME | wc -l)
-                      if [[ $BUCK -gt 0 ]]
-                      then
-                      echo "The variable is greater than 0."
-                      fi
+                      env
                       echo build
                   '''
               }
