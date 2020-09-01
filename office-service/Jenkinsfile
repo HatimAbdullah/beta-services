@@ -1,51 +1,34 @@
 pipeline {
   agent {
-    kubernetes {
-      yaml """
-apiVersion: v1
-kind: Pod
-metadata:
-  labels:
-    service_name: office-service
-    service_type: REST
-spec:
-  containers:
-  - name: dnd
-    image: docker:latest
-    command: 
-    - cat
-    tty: true
-    volumeMounts: 
-    - mountPath: /var/run/docker.sock
-      name: docker-sock
-  - name: kubectl
-    image: bryandollery/terraform-packer-aws-alpine
-    command:
-    - cat
-    tty: true
-  volumes:
-  - name: docker-sock
-    hostPath:
-      path: /var/run/docker.sock  
-      type: Socket
-"""
+    docker {
+      image 'lordblackfish/beta-env'
+      args "--entrypoint=''"
     }
   }
   environment {
-    CREDS = credentials('docker-creds')
     DOCKER_NAMESPACE = 'rahafog1'
     SERVICE_NAME = 'office-service'
-    TOKEN=credentials('be58ac6f-89ae-461a-989c-f70b29b78f20')
    }
    stages {
-      stage("Build") {
+      stage("test") {
           steps {
-              container('dnd') {
-                  sh '''
-                      cd $SERVICE_NAME
-                      docker build --tag $DOCKER_NAMESPACE/$SERVICE_NAME .
-                  '''
-              }
+             
+            dir('servicelayer') {
+            script {
+                //Using the git command to check the difference between previous successful commit. ${GIT_PREVIOUS_SUCCESSFUL_COMMIT} is an environment variable comes with GIT Jenkins plugin
+                //There is a drawback though, if it is the first time you are running this job, this variable is not available and fails the build
+                //For the first time i had to use ${env.GIT_COMMIT} itself at both places to pass the build. A hack but worth it for future builds.
+
+                def strCount = sh(returnStdout: true, script: "git diff --name-only ${env.GIT_COMMIT} ${GIT_PREVIOUS_SUCCESSFUL_COMMIT} | grep servicelayer | wc -l").trim()
+                if(strCount=="0") {
+                    echo "Skipping build no files updated"
+                    CONTINUE_BUILD = false
+                } else {
+                    echo "Changes found in the servicelayer module"
+                }
+            }
+        }
+              
           }
       }
       stage("Release") {
