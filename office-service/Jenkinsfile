@@ -13,7 +13,7 @@ pipeline {
       stage("test") {
           steps {
              
-            dir("office-service") {
+            dir(env.SERVICE_NAME) {
             script {
 
                 def strCount = sh(returnStdout: true, script: "git diff --name-only ${env.GIT_COMMIT} ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT} | grep ${env.SERVICE_NAME} | wc -l").trim()
