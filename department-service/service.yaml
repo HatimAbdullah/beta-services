@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: department-service
-  namespace: department-test
+  namespace: department-prod
 spec:
   type: NodePort
   selector:
