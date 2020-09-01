@@ -13,7 +13,7 @@ pipeline {
       stage("test") {
           steps {
              
-            dir('servicelayer') {
+            dir('office-service') {
             script {
                 //Using the git command to check the difference between previous successful commit. ${GIT_PREVIOUS_SUCCESSFUL_COMMIT} is an environment variable comes with GIT Jenkins plugin
                 //There is a drawback though, if it is the first time you are running this job, this variable is not available and fails the build
@@ -33,22 +33,11 @@ pipeline {
       }
       stage("Release") {
           steps {
-              container('dnd') {
+              
                   sh '''
-                      docker login -p $CREDS_PSW -u $CREDS_USR
-                      docker push $DOCKER_NAMESPACE/$SERVICE_NAME
+                      echo build
                   '''
-              }
-          }
-      }
-      stage("Deploy") {
-          steps {
-              container('kubectl') {
-                  sh '''
-                      cd $SERVICE_NAME
-                      kubectl --token=$TOKEN apply -f namespace.yaml -f deploy.yaml -f service.yaml
-                  '''
-              }
+              
           }
       }
   }
