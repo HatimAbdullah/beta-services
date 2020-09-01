@@ -1,9 +1,8 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: "office-ingress"
-  namespace: office-test
-
+  name: office-ingress-prod
+  namespace: office-prod
 spec:
   rules:
     - host:

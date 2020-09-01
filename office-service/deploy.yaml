@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: office-service
-  namespace: office-test
+  name: office-deployment
+  namespace: office-prod
   labels:
     app: office-service
     type: api
@@ -17,7 +17,7 @@ spec:
         app: office-service
     spec:
       containers:
-      - name: department-service
-        image: rahafog1/office-service
+      - name: office-service
+        image: lordblackfish/office-service:version-number
         ports:
         - containerPort: 80

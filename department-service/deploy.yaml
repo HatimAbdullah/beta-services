@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: department-service
-  namespace: department-test
+  name: department-deployment
+  namespace: department-prod
   labels:
     app: department-service
     type: api
@@ -18,6 +18,6 @@ spec:
     spec:
       containers:
       - name: department-service
-        image: rahafog1/department-service
+        image: lordblackfish/department-service:version-number
         ports:
         - containerPort: 80

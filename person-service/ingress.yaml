@@ -1,9 +1,8 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: "person-ingress"
-  namespace: person-test
-
+  name: person-ingress-prod
+  namespace: person-prod
 spec:
   rules:
     - host:

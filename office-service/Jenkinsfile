@@ -1,10 +1,11 @@
 pipeline {
   agent {
-    kubernetes {
+   kubernetes {
       yaml """
 apiVersion: v1
 kind: Pod
 metadata:
+  namespace: jenkins
   labels:
     service_name: office-service
     service_type: REST
@@ -18,6 +19,9 @@ spec:
     volumeMounts: 
     - mountPath: /var/run/docker.sock
       name: docker-sock
+    - name: relic
+      mountPath: /root/.relic
+      readOnly: true
   - name: kubectl
     image: bryandollery/terraform-packer-aws-alpine
     command:
@@ -28,45 +32,86 @@ spec:
     hostPath:
       path: /var/run/docker.sock  
       type: Socket
+    volumes:
+  - name: relic
+    secret:
+      secretName: dock
 """
-    }
   }
   environment {
-    CREDS = credentials('docker-creds')
-    DOCKER_NAMESPACE = 'rahafog1'
+    DOCKER_NAMESPACE = 'lordblackfish'
     SERVICE_NAME = 'office-service'
-    TOKEN=credentials('be58ac6f-89ae-461a-989c-f70b29b78f20')
    }
    stages {
-      stage("Build") {
+      stage("Detect") {
+          steps {
+             
+            dir(env.SERVICE_NAME) {
+	    /*
+               sh 'DIFF=$(git diff --name-only $GIT_COMMIT $GIT_PREVIOUS_SUCCESSFUL_COMMIT | grep $SERVICE_NAME | wc -l)'
+               sh 'if [[ $DIFF -gt 0 ]]'
+               sh 'then'
+               sh "echo 'detcted changes, proceeding with build'"
+               env.CONTINUE_BUILD = sh(script:'echo true', returnStdout: true)
+               sh 'else'
+	        sh "echo 'no detcted changes, skipping build'"
+                env.CONTINUE_BUILD = sh(script:'echo false', returnStdout: true)
+               sh 'fi'
+	    */
+            script {
+
+                def strCount = sh(returnStdout: true, script: "git diff --name-only ${env.GIT_COMMIT} ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT} | grep ${env.SERVICE_NAME} | wc -l").trim()
+                if(strCount=="0") {
+                    echo "no detcted changes, skipping build"
+                    env.CONTINUE_BUILD = false
+                } else {
+                    echo "detcted changes, proceeding with build"
+                    env.CONTINUE_BUILD = true
+                }
+            }
+        }
+              
+          }
+      }
+    
+    stage("Build") {
+	when { environment name: 'CONTINUE_BUILD', value: 'true' }
           steps {
               container('dnd') {
                   sh '''
                       cd $SERVICE_NAME
-                      docker build --tag $DOCKER_NAMESPACE/$SERVICE_NAME .
+                      docker build --tag $DOCKER_NAMESPACE/$SERVICE_NAME:$BUILD_NUMBER .
                   '''
               }
           }
       }
       stage("Release") {
+	when { environment name: 'CONTINUE_BUILD', value: 'true' }
           steps {
               container('dnd') {
                   sh '''
-                      docker login -p $CREDS_PSW -u $CREDS_USR
-                      docker push $DOCKER_NAMESPACE/$SERVICE_NAME
+                      docker login -u lordblackfish -p $(cat /root/.relic/token)
+                      docker push $DOCKER_NAMESPACE/$SERVICE_NAME:$BUILD_NUMBER
                   '''
               }
           }
       }
+
       stage("Deploy") {
+	when { environment name: 'CONTINUE_BUILD', value: 'true' }
           steps {
               container('kubectl') {
                   sh '''
-                      cd $SERVICE_NAME
-                      kubectl --token=$TOKEN apply -f namespace.yaml -f deploy.yaml -f service.yaml
+		      cd $SERVICE_NAME
+		      sed -i 's+version-number+'"$BUILD_NUMBER"'+g' deployment.yaml
+		      kubectl apply -f namespace.yaml 2> /dev/null
+                      kubectl apply -f deploy.yaml -f service.yaml
                   '''
               }
           }
       }
+
+
+
   }
 }

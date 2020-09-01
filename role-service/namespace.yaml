@@ -1,4 +1,8 @@
 kind: Namespace
 apiVersion: v1
 metadata:
+<<<<<<< HEAD
   name: role-test
+=======
+  name: role-dev
+>>>>>>> dev

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: person-service
-  namespace: person-test
+  namespace: person-prod
   labels:
     app: person-service
     type: api
@@ -18,6 +18,6 @@ spec:
     spec:
       containers:
       - name: person-service
-        image: rahafog1/person-service
+        image: lordblackfish/person-service:version-number
         ports:
         - containerPort: 80
