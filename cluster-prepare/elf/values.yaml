@@ -1,4 +1,0 @@
-service:
-  type: NodePort
-  port: 5601
-  nodePort: 30100
