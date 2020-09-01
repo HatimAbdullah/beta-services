@@ -38,6 +38,7 @@ spec:
       secretName: dock
 """
   }
+}
   environment {
     DOCKER_NAMESPACE = 'lordblackfish'
     SERVICE_NAME = 'office-service'
