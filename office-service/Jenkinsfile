@@ -14,8 +14,8 @@ pipeline {
           steps {
              
             dir(env.SERVICE_NAME) {
-	    sh """ 
-               DIFF=${git diff --name-only $GIT_COMMIT $GIT_PREVIOUS_SUCCESSFUL_COMMIT | grep $$SERVICE_NAME | wc -l}
+	    sh '''
+               DIFF=$(git diff --name-only $GIT_COMMIT $GIT_PREVIOUS_SUCCESSFUL_COMMIT | grep $SERVICE_NAME | wc -l)
                if [[ $DIFF -gt 0 ]]
                then
                 echo 'detcted changes, proceding with build'
@@ -24,7 +24,7 @@ pipeline {
 	        echo 'no detcted changes, skipping build'
                 CONTINUE_BUILD = false
                fi
-	    """
+	    '''
            /* script {
 
                 def strCount = sh(returnStdout: true, script: "git diff --name-only ${env.GIT_COMMIT} ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT} | grep ${env.SERVICE_NAME} | wc -l").trim()
