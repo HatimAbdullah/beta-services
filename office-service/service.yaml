@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: office-service
-  namespace: office-prod
+  namespace: office-test
 spec:
   type: NodePort
   selector:
