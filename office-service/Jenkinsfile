@@ -33,7 +33,7 @@ pipeline {
                when { environment name: 'CONTINUE_BUILD', value: 'true' } 
 		steps {
                   sh '''
-                      env
+                      git diff --name-only $GIT_COMMIT $GIT_PREVIOUS_SUCCESSFUL_COMMIT | grep $SERVICE_NAME | wc -l
                       echo build
                   '''
               }
