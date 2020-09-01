@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: office-service
-  namespace: office-prod
+  namespace: office-test
   labels:
     app: office-service
     type: api
