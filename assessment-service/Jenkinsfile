@@ -7,7 +7,7 @@ kind: Pod
 metadata:
   namespace: jenkins
   labels:
-    service_name: office-service
+    service_name: assessment-service
     service_type: REST
 spec:
   containers:
