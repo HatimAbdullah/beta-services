@@ -15,7 +15,7 @@ pipeline {
              
             dir(env.SERVICE_NAME) {
 	    sh """ 
-               DIFF=$(git diff --name-only $GIT_COMMIT $GIT_PREVIOUS_SUCCESSFUL_COMMIT | grep $SERVICE_NAME | wc -l)
+               DIFF=${git diff --name-only $GIT_COMMIT $GIT_PREVIOUS_SUCCESSFUL_COMMIT | grep $SERVICE_NAME | wc -l}
                if [[ $DIFF -gt 0 ]]
                then
                 echo 'detcted changes, proceding with build'
