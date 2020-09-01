@@ -104,7 +104,7 @@ spec:
               container('kubectl') {
                   sh '''
 		      cd $SERVICE_NAME
-		      sed -i 's+version-number+'"$BUILD_NUMBER"'+g' deployment.yaml
+		      sed -i 's+version-number+'"$BUILD_NUMBER"'+g' deploy.yaml
 		      kubectl apply -f namespace.yaml 2> /dev/null
                       kubectl apply -f deploy.yaml -f service.yaml
                   '''
