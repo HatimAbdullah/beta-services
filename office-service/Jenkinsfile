@@ -24,7 +24,7 @@ pipeline {
 	        sh "echo 'no detcted changes, skipping build'"
                 env.CONTINUE_BUILD = sh(script:'echo false', returnStdout: true)
                sh 'fi'
-	    '''
+	    
            /* script {
 
                 def strCount = sh(returnStdout: true, script: "git diff --name-only ${env.GIT_COMMIT} ${env.GIT_PREVIOUS_SUCCESSFUL_COMMIT} | grep ${env.SERVICE_NAME} | wc -l").trim()
