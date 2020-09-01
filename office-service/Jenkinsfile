@@ -33,7 +33,11 @@ pipeline {
                when { environment name: 'CONTINUE_BUILD', value: 'true' } 
 		steps {
                   sh '''
-                      git diff --name-only $GIT_COMMIT $GIT_PREVIOUS_SUCCESSFUL_COMMIT | grep $SERVICE_NAME | wc -l
+                      BUCK=$(git diff --name-only $GIT_COMMIT $GIT_PREVIOUS_SUCCESSFUL_COMMIT | grep $SERVICE_NAME | wc -l)
+                      if [[ $BUCK -gt 0 ]]
+                      then
+                      echo "The variable is greater than 0."
+                      fi
                       echo build
                   '''
               }
