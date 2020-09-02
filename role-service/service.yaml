@@ -1,12 +1,8 @@
 apiVersion: v1
 kind: Service
 metadata:
-<<<<<<< HEAD
-  name: role-prod
-=======
   name: role-service
   namespace: role-prod
->>>>>>> 8486a5486a31b3ad9afa49d8ae23439982393487
 spec:
   selector:
     app: role-service
